@@ -1233,7 +1233,6 @@ tns-1-release/                          # Standardized release layout (spec: uns
 
 | Tài liệu | Nội dung |
 | --- | --- |
-| [`docs/SPEC-UNSCA-V2-P-UNIFIED-v1.0.9.3-FREEZE.pdf`](docs/SPEC-UNSCA-V2-P-UNIFIED-v1.0.9.3-FREEZE.pdf) | Đặc tả kỹ thuật đầy đủ (97 trang, tiếng Anh): *Transformation Is All You Need — U-NSCA v2 (P)* |
 | [`LICENSE`](LICENSE) | Văn bản giấy phép MIT |
 
 ## License

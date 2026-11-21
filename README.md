@@ -1,13 +1,14 @@
 # Takuma-1 (Trinity Symbolic) · `TNS-1`
 
-**Transformation Is All You Need — kiến trúc nhận thức neuro-symbolic hộp trắng.**
+**Transformation Is All You Need — a white-box neuro-symbolic cognitive architecture.**
 
-Đặc tả kỹ thuật của một kiến trúc nhận thức thần kinh – ký hiệu hộp trắng, phát triển
-bởi **GOSIS VN**: nhân Prolog mờ trực giác, bộ nhớ LMDB Merkle-DAG, tổng hợp thị giác
-2D/2.5D/3D, robot LiDAR chủ động và tự cải tiến đệ quy trong sandbox.
+Technical specification of a white-box neuro-symbolic cognitive architecture developed
+by **GOSIS VN**: an intuitionistic defeasible fuzzy Prolog kernel, a content-addressable
+LMDB Merkle-DAG memory, 2D/2.5D/3D visual synthesis, active LiDAR robotics, and
+sandboxed recursive self-improvement.
 
-**Mã kỹ thuật:** `TNS-1` (*Trinity Symbolic Systems*) · **Đặc tả:** `U-NSCA v2 (P)`
-(`SPEC-UNSCA-V2-P-UNIFIED v1.0.9.3-FREEZE`)
+**Technical designation:** `TNS-1` (*Trinity Symbolic Systems*) · **Architecture
+specification:** `U-NSCA v2 (P)` (`SPEC-UNSCA-V2-P-UNIFIED v1.0.9.3-FREEZE`)
 
 ![GOSIS VN](https://img.shields.io/badge/Organization-GOSIS%20VN-0F172A?style=flat-square)
 ![Takuma-1](https://img.shields.io/badge/Model-Takuma--1%20(Trinity%20Symbolic)-1D4ED8?style=flat-square)
@@ -22,328 +23,43 @@ bởi **GOSIS VN**: nhân Prolog mờ trực giác, bộ nhớ LMDB Merkle-DAG, 
 [![SMT-LIB](https://img.shields.io/badge/SMT--LIB-2.6-4B5563)](https://smt-lib.org/)
 ![Linux x86_64](https://img.shields.io/badge/Linux-x86__64%20%7C%20AVX2%2BFMA-FCC624?logo=linux&logoColor=black)
 ![Edge RAM](https://img.shields.io/badge/Edge%20RAM-anon%20%E2%89%A4%201%2C536%20MiB%20(cgroup%20v2)-0284C7?style=flat-square)
-![Docs](https://img.shields.io/badge/Docs-VI%20%7C%20EN%20%7C%20JA%20%7C%20ZH-6366F1?style=flat-square)
+![Docs](https://img.shields.io/badge/Docs-EN%20%7C%20JA%20%7C%20VI%20%7C%20ZH-6366F1?style=flat-square)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[🇻🇳 Tiếng Việt](#vietnamese-vi) ·
 [🇬🇧 English](#english-en) ·
 [🇯🇵 日本語](#japanese-ja) ·
+[🇻🇳 Tiếng Việt](#vietnamese-vi) ·
 [🇨🇳 中文](#chinese-zh) ·
-[🗂️ Gói phát hành](#appendix-a-release-package-layout) ·
-[📖 Trích dẫn](#appendix-b-citation) ·
-[📚 Tài liệu](#documentation) ·
-[⚖️ Giấy phép](#license)
+[🗂️ Release package](#appendix-a-release-package-layout) ·
+[📖 Citation](#appendix-b-citation) ·
+[⚖️ License](#license)
 
 ---
 
 > [!NOTE]
-> Tài liệu có bốn ngôn ngữ: tiếng Việt, tiếng Anh, tiếng Nhật và tiếng Trung. Tên
-> module, ký hiệu và thuật ngữ kỹ thuật giữ nguyên tiếng Anh ở mọi phần.
->
-> This document is available in Vietnamese, English, Japanese and Chinese. Module
-> names, symbols and technical terms stay in English in every section.
+> English is the primary language of this document. Japanese, Vietnamese and Chinese
+> translations follow the English section. Module names, symbols and technical terms
+> stay in English in every section.
 
 > [!WARNING]
-> **Tài liệu đặc tả, giai đoạn tiền triển khai (Pre-implementation).** Các con số về
-> độ trễ, FPS, bộ nhớ và thông lượng là **mục tiêu thiết kế**, chưa phải kết quả đo
-> thực tế. Gói phát hành mô tả ở [Phụ lục A](#appendix-a-release-package-layout) là
-> cấu trúc dự kiến.
->
 > **Pre-implementation specification.** Latency, FPS, memory and throughput figures
 > are **design targets**, not measured results. The release package in
 > [Appendix A](#appendix-a-release-package-layout) is the planned layout.
 
 > [!NOTE]
-> **Giấy phép / License.** Lõi runtime phát hành theo [MIT License](LICENSE). Các
-> thành phần bên thứ ba giữ giấy phép riêng và được cô lập — xem
-> [Giấy phép](#license). / The core runtime is released under the
-> [MIT License](LICENSE); third-party components keep their own licenses and are
-> isolated — see [License](#license).
+> **License.** The core runtime is released under the [MIT License](LICENSE).
+> Third-party components keep their own licenses and are isolated — see
+> [License](#license).
 
 ## Table of Contents
 
-- [🇻🇳 Tiếng Việt (VI)](#vietnamese-vi) — tóm tắt, triết lý thiết kế, kiến trúc, pipeline, bộ nhớ Edge, môi trường, lộ trình, ngôn ngữ sử dụng
-- [🇬🇧 English (EN)](#english-en) — abstract, design philosophy, architecture, pipelines, Edge memory, environment, roadmap, languages used
-- [🇯🇵 日本語 (JA)](#japanese-ja) — 概要、設計思想、アーキテクチャ、パイプライン、Edge メモリ、環境、ロードマップ、使用言語
-- [🇨🇳 中文 (ZH)](#chinese-zh) — 摘要、设计哲学、系统架构、流水线、边缘内存、环境、路线图、使用语言
-- [Appendix A — Release Package Layout (Phụ lục A: cấu trúc gói phát hành)](#appendix-a-release-package-layout)
-- [Appendix B — Citation (Phụ lục B: trích dẫn BibTeX)](#appendix-b-citation)
-- [Documentation (Tài liệu)](#documentation)
-- [License (Giấy phép)](#license)
-
----
-
-## Vietnamese (VI)
-
-🇻🇳 **Tiếng Việt** — Takuma-1 (Trinity Symbolic) / `TNS-1`
-
-> **Chuyển nhanh ngôn ngữ:** [Tiếng Việt](#vietnamese-vi) · [English](#english-en) · [日本語](#japanese-ja) · [中文](#chinese-zh) · [↑ Lên đầu trang](#table-of-contents)
-
-### 1. Tóm tắt & Động lực Kiến trúc
-
-**Takuma-1 (Trinity Symbolic)** — mã kỹ thuật chính thức **TNS-1 (Trinity Symbolic Systems)**, phát triển bởi nhóm **GOSIS VN** — là một kiến trúc nhận thức thần kinh – ký hiệu hộp trắng (*white-box neuro-symbolic cognitive architecture*) phân tách chức năng hoàn toàn, được đặc tả theo tài liệu kỹ thuật tổng thể **U-NSCA v2 (P)** (`SPEC-UNSCA-V2-P-UNIFIED v1.0.9.3-FREEZE`, trạng thái *Spec Freeze — GO cho Phase 1A-Alpha Track 1*).
-
-Thay vì ép một mạng nơ-ron nguyên khối duy nhất vừa lưu trữ tri thức, vừa duyệt cây suy luận đa nhánh, vừa sinh token bề mặt, **Takuma-1 (`TNS-1`)** vận hành theo mô thức ***Transformation Is All You Need*** nhằm giải quyết triệt để 4 nghịch lý cấu trúc của Transformer tự hồi quy nguyên khối và mô hình khuếch tán pixel:
-
-| Nghịch lý Cấu trúc | Giới hạn của Kiến trúc Nguyên khối | Giải pháp trong Takuma-1 (`TNS-1`) |
-| :--- | :--- | :--- |
-| **1. Bất khả hợp nhất KV-Cache nhân quả** | Dưới RoPE, các nhánh suy luận hội tụ từ tiền tố hoặc độ dài token khác nhau ($t_1 \neq t_2$) tạo tensor KV khác nhau về số học ($K_{B_1}(S) \neq K_{B_2}(S)$), khiến bộ nhớ tăng tuyến tính khi mở rộng $N \in [10^3, 10^4]$ nhánh song song. | **LMDB Merkle-DAG 2 tầng** (`Core_Axiom_LMDB` + `Ephemeral_Session_Arena`) kết hợp nâng hằng số Mod TCLP, chuẩn hóa lặp 1-WL + De Bruijn và khử trùng lặp nhánh con bằng BLAKE3 128-bit trong $O(1)$ ($\approx 100\text{ ns}$). |
-| **2. Quán tính chuẩn hóa Softmax** | Chiếu lên đơn hình xác suất ($\sum_v P(v \mid x) \equiv 1.0$) làm mất tổng cường độ bằng chứng, đánh đồng xung đột cân bằng ($[+50,+50]$) với sự vô tri tuyệt đối ($[-10,-10]$) và làm suy giảm độ chính xác từ chối trả lời. | **Logic Mờ Trực giác Atanassov** $\langle \mu, \nu, \pi \rangle$ ($\mu+\nu+\pi=1$) với cổng định tuyến **Ưu tiên Xung đột** (`Conflict_Aware_Refusal`) và **Cổng Vô tri Kép** (`Epistemic_Positive_Refusal` / truy tìm tiên đề thiếu $\Delta_i$). |
-| **3. Ghép chặt Ngôn ngữ – Logic & Thuế Căn chỉnh** | Dùng chung trọng số lan truyền xuôi giữa suy diễn logic, cú pháp bề mặt và chính sách RLHF gây lãng phí băng thông bộ nhớ và làm nhiễu mạch suy luận toán – logic (*Alignment Tax*). | **Codec Hub-and-Spoke tách rời** (`mod-encoder` + `mod-slm`) + ghép con trỏ không sao chép **PLSS** `<PTR_ID_k>` ($0.00\%$ trôi sai số thực tế) + **Dàn Ưu tiên Nhận thức 6 cấp** ($\mathcal{L}_{\text{prio}} \in \{1..6\}$). |
-| **4. Lưới Pixel 2D & Nhập nhằng Tỷ lệ Đơn nhãn** | Khuếch tán pixel thiếu bất biến Euclide 3D; phép chiếu camera đơn nhãn $\text{rank}(J_{\text{proj}})=2<3$ là bài toán đặt không chỉnh; cắt đa ô dày đặc trên GUI 4K phá vỡ SLA độ trễ thấp. | **Động cơ Tổng hợp Thị giác Xây dựng 2 nhánh 2D/2.5D/3D** (`wgpu 30.0.1` + `vello 0.12.0` + `spade` + `faer`, $>120\text{ FPS}$, $\le 2.45\text{ ms/khung}$), **Grounding GUI 4K 2 tầng** (OS A11y/DOM $<1\text{ ms}$) và **Robot LiDAR ToF chủ động** (`HERO-LO`/`HP2-SLAM`, $500\text{–}1000\text{ Hz}$). |
-
----
-
-### 2. Triết lý Thiết kế & 4 Cơ chế Bảo vệ Hộp trắng
-
-**Takuma-1 (`TNS-1`)** áp dụng **Phân tách Chức năng (*Functional Disentanglement*)** thành 5 mặt phẳng trực giao kiểm chứng hình thức được, đi kèm 4 bất biến kiềm chế hộp trắng:
-
-1. **Cấm Tiến hóa Luật Ẩn (*Zero Latent Rules*):** Tri thức thu được trong mơ ngoại tuyến (`RSI-1`) hay tiếp nạp trực tuyến (`RSI-3`) tuyệt đối không tích lũy vào trọng số ma trận mờ đục. Mọi luật suy diễn hay định luật vật lý phải kết tinh thành cấu trúc 32-byte `AnnotatedPredicateNode` hoặc phương trình đóng SymEngine/SMT-LIB trong `Core_Axiom_LMDB`.
-2. **Phanh Entropy MDL Hộp trắng ($\mathcal{H}_{\text{unverified}}$) & Đẩy loại Pareto Tự động:** Đo độ phức tạp cấu trúc chưa kiểm chứng bằng $\mathcal{H}_{\text{unverified}} = \sum_{v \in \mathcal{V}_{\text{auto}}} (\text{Depth}(v)+1)\log_2(|\text{Children}(v)|+2) \ge |\mathcal{V}_{\text{auto}}|\text{ bit}$. Khi chạm ngưỡng $\Theta_{\text{quota}}$, *Automated Pareto Eviction* tự động thay thế macro kém hiệu quả nhất, trong khi mọi ghi vĩnh viễn vào `Core_Axiom_LMDB` bắt buộc vượt qua kiểm chứng SMT 4 truy vấn.
-3. **Mặt phẳng Tin cậy Host Thống nhất + Sandbox Zone 4A Không Mạng & Airlock C-ABI 128-Byte:** Các thành phần lõi tin cậy (`core/unsca-kernel`, `mod-lmdb` đơn sở hữu với `PROT_READ` mmap trên Edge, `mod-encoder`, `mod-slm`, `mod-streamer-rt` và Trọng tài Trực giao Host) chạy trên Host. Mã không tin cậy bị cô lập hoàn toàn trong MicroVM thuần CPU **Firecracker v1.18.0** (**Zone 4A**, loại bỏ `eth0`, VMGenID + `virtio-rng` + UFFD warm pool $3\text{–}8\text{ ms}$); Zone 4B (Blender nội tuyến) bị loại bỏ vĩnh viễn. Luồng Zone 4A $\leftrightarrow$ Host đi qua Airlock C-ABI 128-byte *fail-closed* (`Host UnixStream <-> Guest AF_VSOCK`, không dùng `vhost_vsock` trên Host) kết hợp chữ ký Ed25519 `verify_strict` trên mặt phẳng tin cậy Judge/Trainer $\to$ `mod-lmdb`.
-4. **Cắt bỏ Phẫu thuật & Khôi phục Thời gian Merkle-Root 0.5 ms:** Mỗi kỷ nguyên $e$ lưu băm gốc bất biến `Merkle_Root_Hash(e)` trong `Epoch_Roots`, cho phép xóa chính xác một `node_hash` 128-bit hoặc quay lui nguyên tử về `Merkle_Root_Hash(e - k)` trong $\approx 0.5\text{ ms}$.
-
----
-
-### 3. Kiến trúc Hệ thống & Tô-pô Đồng hồ Cát Hai chiều
-
-`TNS-1` vận hành nhận thức đầu-cuối theo mô hình **Đồng hồ Cát Hai chiều (*Bidirectional Hourglass*: Tam giác Ngược $\to$ Cổ Hộp trắng Chính tắc $\to$ Tam giác Thuận)** trên không gian làm việc Rust 2024 dạng **Hub-and-Spoke** (`core/unsca-kernel` $\to$ `system/` $\to$ `modules/mod-*`).
-
-```mermaid
-flowchart TB
-    subgraph S1["SPOKE 1: Tam giác Ngược — mod-encoder & Tiếp nạp Đa phương thức"]
-        ENC["EmbeddingGemma 2 271M Đóng băng 100% (Q8_0, bf16/fp32)<br/>H_1:T (512d) + L1 Ontology SimVQ 768d (6.0 MiB, tối đa 8191)"]
-        BIA["Bộ chuyển đổi Deep Biaffine DAG-to-Horn<br/>(0.79 MB INT8, 268.44 MOPs, 0.4–1.2 ms AVX2, Top-B=3)"]
-        SCN["Bộ quét Song song (Nạp lười / Loại trừ tương hỗ)<br/>EmoBank+EmoPair VAD Trie · gliner2.5-small-v1 · V-JEPA 2.1 · ToF LiDAR"]
-        ENC --> BIA
-        SCN --> BIA
-    end
-
-    subgraph HUB["HUB: Cổ Hộp trắng Chính tắc — core/unsca-kernel & system/"]
-        PRUNE["Cổng Tỉa Kép Pre-WAM (MOD-PRUNE-02)<br/>Tier-1 BFC O(|R_Q|) (<100 ms) · Tier-2 CLIPPER Static-VE MILP + CLMN"]
-        WAM["Máy ảo WAM-SIMD Prolog Mờ Trực giác Khả bác<br/>32B/64B AVX2 · IFS ⟨μ,ν,π⟩ · Dual-Channel WMC + CBF/CBF-UM · d-DNNF Mixed IA/AA"]
-        MEM["LMDB Merkle-DAG 2 Tầng (mod-lmdb Đơn sở hữu)<br/>core_hot.lmdb (PROT_READ) · core_cold_archive.lmdb (Worker lạnh cô lập)<br/>Ephemeral_Session_Arena (Sharded Slab, GC O(1) ~1 ns)"]
-        SMT["mod-smt-cas Cô lập (IPC Ngoài tiến trình)<br/>egglog 3.0.0 · SymEngine 0.14/0.15 · Z3 0.23.0 · cvc5 0.6.1 · dReal (UNSAT) · SUNDIALS 7.6"]
-        PRUNE --> WAM
-        WAM <--> MEM
-        WAM <--> SMT
-    end
-
-    subgraph S2["SPOKE 2: Tam giác Thuận — Codec Ngôn ngữ, Thị giác & Robot"]
-        SLM["mod-slm (Codec Bề mặt + PLSS Trôi 0.00%)<br/>Phase 1–2 AR Sản xuất: Qwen3-0.6B Q4 (Edge) / QAT Gemma 4 E2B (>=8GB)<br/>Track 2 R&D: Block-Causal AC-NCM + SpaceByte/HAT + LoRA-XS (1.57 MB)"]
-        VIS["mod-vision & mod-streamer-rt (Zone 6 wgpu 30.0.1 + Vello 0.12.0)<br/>Động cơ 4-DAG · G-Buffer 16-Pass (tái dùng 66.36 MB) · ALG 3B Mesh Warp (<=2.5 ms)<br/>mod-25d-baker · Dual-Driver Arbitrator · hibari-tts / MOSS-TTS-Nano / OBS Sink"]
-        ROB["mod-lidar (Robot LiDAR ToF Chủ động)<br/>HERO-LO (+odom_prior) / HP2-SLAM · Patchwork++ · parry3d 0.31.1 · Điều khiển C2 500–1000 Hz"]
-    end
-
-    subgraph SEC["ZONE 4A SANDBOX & QUẢN TRỊ TRI-MODAL RSI"]
-        Z4A["Zone 4A Sandbox Thuần CPU (Firecracker v1.18.0)<br/>Không eth0 · VMGenID + virtio-rng + UFFD Warm Pool (3–8 ms)<br/>Thực thi Mã không tin cậy · Dream-RSI · Boltz-2 / OpenFold3 / RD-Agent"]
-        AIR["Airlock C-ABI 128-Byte Fail-Closed<br/>Host UnixStream ↔ Guest AF_VSOCK (Không dùng Host vhost_vsock)<br/>Ed25519 verify_strict · Giới hạn zstd 0.14.4 4 MiB · MVCC Nhận thức 6 cấp"]
-        Z4A <--> AIR
-    end
-
-    S1 -- "32B AnnotatedPredicateNode + Top-B AST + Nút 3D" --> HUB
-    HUB -- "WamSkeleton Sở hữu + Immutable_Ptr_Map + Final_VAD" --> SLM
-    HUB -- "Vị từ Không gian + Quỹ đạo Khái niệm" --> VIS
-    HUB -- "Điểm dẫn đường Không va chạm + CLP(R)" --> ROB
-    HUB <--> AIR
-```
-
----
-
-### 4. Các Pipeline Thực thi Đầu-Cuối & Phân hệ
-
-#### 4.1 Pipeline Nhận thức Đa phương thức (`POST /v1/cognitive/execute` — `ALG 4B & 5`)
-
-```mermaid
-flowchart TD
-    REQ["Yêu cầu Đa phương thức Q<br/>(Văn bản / Ảnh / Video / LiDAR / VTuber / Dữ liệu Thực nghiệm)"] --> ST1
-
-    subgraph ST1["GIAI ĐOẠN 1: Tam giác Ngược (15–35 ms CPU Edge)"]
-        E1["mod-encoder: EmbeddingGemma 2 (H_1:T, c_Q^1, z_768)<br/>+ EmoBank/EmoPair VAD Trie + gliner2.5-small-v1"]
-        E2["MOD-PRUNE-02: Tier-1 BFC O(|R_Q|) / Tier-2 CLIPPER+CLMN<br/>-> Active_Concept_Bitmap & Allowed_SLM_Mask"]
-        E3{"Độ phức tạp truy vấn?"}
-        E4["Tier-1 Luồng nhanh (0.4–1.2 ms)<br/>Deep Biaffine Điền khe Lược đồ đóng (Top-B=3)"]
-        E5["Tier-2 Tự động Hình thức hóa Chống VPU (0.5–5 s)<br/>SLM + Kiểm chứng Khứ hồi Z3/cvc5 (F1 == F2) + GenV+HN"]
-        E6["Nhánh Không gian: GUI 4K 2 tầng (OS A11y / V-JEPA 2.1)<br/>Cổng Video VL-JEPA (ALG 3A-VIDEO) hoặc LiDAR (ALG 3C-LIDAR)"]
-        E1 --> E2 --> E3
-        E3 -- "Lược đồ đóng" --> E4
-        E3 -- "Mở / Phức tạp" --> E5
-        E1 -. "Có Ảnh/Video/LiDAR" .-> E6
-    end
-
-    ST1 --> ST2
-
-    subgraph ST2["GIAI ĐOẠN 2: Cổ Hộp trắng Chính tắc (ALG 1-CORE)"]
-        W1["Danh sách việc SLG-WAM Song song + LMDB Merkle-DAG 2 Tầng<br/>32B/64B AVX2 · Mod TCLP · egglog 3.0 · Cầu dao SMT 25 ms"]
-        W2["Lan truyền ngược Phương sai Rủi ro (Luật Tổng Phương sai) & Xếp hạng"]
-        G1{"Cổng 1: Xung đột?<br/>(diss_Q > 0.50 hoặc Bit 3)"}
-        G2{"Cổng 2: Vô tri Kép?<br/>(pi_max > 0.55 hoặc pi_Q > 0.85)"}
-        G3{"Hòa điểm Beam?"}
-        R1["Conflict_Aware_Refusal<br/>(Trả về Bằng chứng Ủng hộ C+ & Phản bác C-)"]
-        R2["Epistemic_Positive_Refusal<br/>(Tìm kiếm Ngược Abductive -> Tiên đề thiếu Delta_i)"]
-        R3["Ambiguity_Clarification_Refusal<br/>(Trả về Top-2 Cách diễn giải Cạnh tranh)"]
-        SKEL["Sao chép WamSkeleton Sở hữu + Immutable_Ptr_Map<br/>Ephemeral_Session_Arena.reset_cursor_to_zero() (~1 ns)"]
-
-        W1 --> W2 --> G1
-        G1 -- "Có (Chế độ Nghiêm ngặt)" --> R1
-        G1 -- "Không" --> G2
-        G2 -- "Có (Chế độ Nghiêm ngặt)" --> R2
-        G2 -- "Không" --> G3
-        G3 -- "Có" --> R3
-        G3 -- "Không" --> SKEL
-    end
-
-    ST2 --> ST3
-
-    subgraph ST3["GIAI ĐOẠN 3: Tam giác Thuận & GIAI ĐOẠN 4: RSI Bất đồng bộ"]
-        T1["Luồng Văn bản: Typed AST Pretty-Printer / AR Gọn + PLSS<br/>(hoặc Track 2 R&D AC-NCM + Aho-Corasick) -> Trôi 0.00%"]
-        V1["Luồng Thị giác: ALG 3B VTuber (<=2.5 ms) / ALG 3D Sửa 2D<br/>hoặc ALG 3C Điêu khắc 3D & Video SE(3) (>=120 FPS)"]
-        RSI["Giai đoạn 4: Kích hoạt Active RSI Bất đồng bộ (BTL cục bộ / Trainer 4-Gate)"]
-        T1 --> RSI
-        V1 --> RSI
-    end
-```
-
-#### 4.2 Pipeline Thị giác 2 Nhánh (`ALG 3B / 3C / 3D`) & Robot LiDAR Chủ động (`ALG 3C-LIDAR`)
-
-```mermaid
-flowchart LR
-    subgraph VIS_PIPE["Động cơ Tổng hợp Thị giác 2 Nhánh (>120 FPS, Bỏ hoàn toàn Zone 4B/Blender)"]
-        VIN["Ảnh 2D / 6 góc Trực giao /<br/>.psd/.ora/.inx / Kịch bản Cảnh"] --> VPER["V-JEPA 2.1 (8–15 ms) + 5D CIELAB<br/>+ Cổng Độ nét Giãn nở B_k (GUI/Robot)"]
-        VPER --> VRT{"Bộ định tuyến Thị giác NCM"}
-        VRT -- "Nhánh A: Sửa 2D / VTuber (ALG 3D)" --> BA["Động cơ Công cụ 4-DAG (G_topo/G_stroke/G_shade/G_logic_vis)<br/>CIELAB + Windfoil Giới hạn + MI-GAN Cắt vùng (27 MB)<br/>wgpu Multigrid Poisson Theta(N) + SPRITETOMESH"]
-        VRT -- "Nhánh B: Điêu khắc 3D & Video (ALG 3C)" --> BB["Tài sản .glb/3DGS gốc hoặc G-Buffer wgpu 16-Pass<br/>(Tái dùng 66.36 MB Scratch) + spade CDT + faer Poisson<br/>Kiểm tra VETR parry3d+HiGHS + Quỹ đạo C2 SE(3)"]
-        BA --> LDB["Fabricated_2_5D_Layers (LMDB Thống nhất)<br/>VirtualProxyRig3D + 52 ARKit Blendshapes"]
-        BB --> LDB
-        LDB --> RT["Động cơ Thời gian thực ALG 3B (<=2.45 ms/khung iGPU)<br/>Polar SO(2) ARAP 2 bước (0.30 ms) + Đổ bóng Accum_Z<br/>Dual-Driver Arbitrator + mod-broadcast-sink (OBS)"]
-    end
-
-    subgraph LID_PIPE["Robot LiDAR ToF Chủ động Không Tập dữ liệu (ALG 3C-LIDAR)"]
-        LIN["Đám mây điểm LiDAR ToF +<br/>Option#lt;ImuWheelOdom#gt;"] --> L1["16B XYZT SIMD + HERO-LO (~9.5 ms @ 20 Hz)<br/>(Dự phòng: HP2-SLAM) + Tách mặt đất Patchwork++"]
-        L1 --> L2["PCA 3x3 Cầu Thích ứng Khoảng cách<br/>Cổng Tán xạ (rho_scatter > 0.60 & Cường độ phản xạ thấp)"]
-        L2 -- "Khói / Sương / Kính" --> LREF["Từ chối Chủ động LiDAR<br/>(HALT_AND_PROBE_MULTI_ANGLE)"]
-        L2 -- "Thông thoáng" --> L3["Hoạch định Điểm WAM + CLP(R) + parry3d SDF<br/>Spline Thomas C2 (Holonomic) / Pure-Pursuit Bậc 5 G2<br/>Điều khiển Vòng kín 500–1000 Hz"]
-    end
-```
-
-#### 4.3 Pipeline Tự cải tiến Đệ quy Ba chế độ (`Tri-Modal RSI`) & Airlock 128-Byte
-
-```mermaid
-flowchart TB
-    subgraph L1["VÒNG 1: Mơ Ký hiệu Ngoại tuyến (RSI-1 / Dream-RSI)"]
-        D1["Thế giới Phát lại M_dream + Ràng buộc Phủ định Nhánh lỗi C_neg"]
-        D2["I-PUCT Lần đầu (pi > 0.40) -> Zone 4A Firecracker v1.18.0<br/>(VMGenID + getrandom + UFFD Warm Pool 3–8 ms)"]
-        D3["E-Stitch Cửa sổ (Edge) / Toàn cục (Trainer) + GrowLibm + Propper"]
-        D1 --> D2 --> D3
-    end
-
-    subgraph L2["VÒNG 2: RSI Chủ động Hai tầng (RSI-2)"]
-        A1["Tầng 2A (Edge Cục bộ): Core PROT_READ + Local_Overlay (<5 MB)<br/>BTL Đối xứng Tổng-bằng-0 Chặn L_inf (Phép chiếu O(K), K<=64)"]
-        A2["Tầng 2B (Trainer Trung tâm): Kết tinh 4 Cổng<br/>Top-K Rủi ro -> Chuyên gia chọn -> Opengrep MIT + SMT 4-truy vấn UNSAT -> Khóa Cấp 5"]
-    end
-
-    subgraph L3["VÒNG 3: RSI Trực tuyến Có phép (RSI-3)"]
-        O1["Luồng API Whitelist -> Trọng tài Trực giao Host (DeLP)<br/>RPC Mô phỏng (Boltz-2 / OpenFold3 / GROMACS) + Biến động West f64 Suy giảm"]
-        O2["Airlock 128B C-ABI Verify-Before-Parse<br/>Ed25519 verify_strict + Whitelist cờ nghiêm ngặt (0x00|0x01|0x02|0x07) + Giới hạn zstd 4 MiB"]
-        O1 --> O2
-    end
-
-    L1 --> MVCC["Bộ điều khiển MVCC Nhận thức & Dàn Ưu tiên 6 Cấp (L_prio: 1..6)<br/>Cấp 6 An toàn Bất biến > Cấp 5 Trainer/VM=0 > Cấp 4 Phản bác Chính thức<br/>> Cấp 3 Sự kiện Khả bác > Cấp 2 Mơ/Trung lập > Cấp 1 Biến Tham chiếu<br/>+ Phanh MDL H_unverified + Rollback Merkle-Root 0.5 ms"]
-    L2 --> MVCC
-    L3 --> MVCC
-    MVCC --> DB["Core_Axiom_LMDB (Trainer R/W · Edge PROT_READ) + Local_Overlay_LMDB (Edge R/W)<br/>Tường lửa Pháp lý: ZERO_VISUAL_STYLE_RSI cô lập hoàn toàn User_Avatar_Store/"]
-```
-
----
-
-### 5. Ngân sách Bộ nhớ Edge (`cgroup v2`) & Bảng Thông số Kỹ thuật
-
-#### 5.1 Kiểm toán Bộ nhớ Phân tách `cgroup v2` Chế độ Edge (`anon <= 1,536 MiB`, `memory.high = 3,072 MiB`, `memory.max = 4,096 MiB`)
-
-| Thành phần Chế độ Edge | `anon` (MiB) | `file` (MiB) | Cơ chế Cấp phát & Chính sách Gia cố |
-| :--- | ---: | ---: | :--- |
-| **HUB (`WAM-SIMD` + Arena + `egglog`)** | 350 | 0 | Sharded slabs, `TableSlots`, `egglog` ($\le 10\text{k}$ e-nodes) |
-| **`Qwen3-0.6B Q4` KV + Bộ nhớ tạm** | 159 | 0 | Khóa `-c 2048 -ctk q8_0 -ctv q8_0 -fa on` (119 MiB KV + 40 MiB tạm) |
-| **`mod-encoder` / `ort` / VAD Trie** | 220 | 40 | Kích hoạt bf16/fp32 đóng băng, `gliner2.5-small-v1` (`disable_prepacking=1`), `canonical_ontology.bin` |
-| **`mod-streamer-rt` (Live 2.5D + TTS)** | 285 | 0 | `wgpu 30.0.1` + ARAP + theo dõi khuôn mặt + `hibari`/`MOSS-TTS-Nano` ONNX (chạy song song 100%) |
-| **Ngăn xếp Runtime, Bộ cấp phát & IPC** | 150 | 0 | Rayon worker stacks, bộ đệm `UnixStream`, khe `io_uring` |
-| **`EmbeddingGemma 2` (`Q8_0 .gguf`)** | 0 | 296 | Page Cache `mmap` chỉ đọc (tuyệt đối không gọi `POSIX_FADV_DONTNEED`) |
-| **`Qwen3-0.6B Q4` (`.gguf`)** | 0 | 500 | Page Cache `mmap` chỉ đọc (tuyệt đối không gọi `POSIX_FADV_DONTNEED`) |
-| **Bytecode `.wamb` đã biên dịch** | 0 | 150 | `0_bootstrap_seed` + `1_logic_math_core` ánh xạ `mmap` trực tiếp |
-| **Tập làm việc nóng `core_hot.lmdb`** | 0 | 600 | `MADV_RANDOM`; `core_cold_archive.lmdb` cô lập trong `mm_struct` riêng |
-| **Tổng Chế độ Edge** | **1,164** | **1,586** | **Tổng `anon+file` $\approx$ 2,750 MiB** (dự phòng `anon` $\approx$ 372 MiB; `mod-smt-cas` Z3 giới hạn $\le 300\text{ MiB}$) |
-
-> **Bất biến C-ABI Rust Căn chỉnh theo Phần cứng (`const _: () = assert!(...)`):** `AnnotatedPredicateNode` = **32 B** (1 thanh ghi AVX2 YMM) · `ArenaBranchStateHeader` = **48 B** · `WamBranchExecutionFrame` = **64 B** (1 dòng cache L1) · `UnifiedDagNodeHeader` = **128 B** · `AirlockEpistemicFrame` = **128 B** (2 dòng cache L1).
-
-#### 5.2 Bảng Đặc tả Sản phẩm Mục tiêu (`Takuma-1 / TNS-1`)
-
-| Chỉ số Đặc tả | Giá trị Mục tiêu Chuẩn hóa | Bảo đảm Kỹ thuật Nền tảng |
-| :--- | :--- | :--- |
-| **Dung lượng Lõi Tối thiểu** | `1.8 GB` (`0.4 GB` hồ sơ nhúng nén tối đa + `25 MB` Seed Ngày-0) | Bytecode WAM-SIMD + `Core_Axiom_LMDB` nén Zstd + khử trùng lặp 1-WL BLAKE3 |
-| **Kho Mở rộng Offload** | `10 GB–50 GB` NVMe SSD (`4096 B` LBA `O_DIRECT`) | 3D Style PatchBanks + WGSL LUT nạp theo yêu cầu; LoRA-XS (1.57 MB) thường trú RAM |
-| **Cô lập Phiên Người dùng (Server)** | `< 5 us` / phiên (`Ephemeral_Session_Arena`) | Rayon đa nhân trên `mmap` chỉ đọc chung; Zone 4A Firecracker cho mã không tin cậy |
-| **SLA Độ trễ Truy vấn** | Tier-1: `P99 < 100 ms` (`8–45 ms` 8-core AVX2) · Tier-2: `0.5–5 s` | Nạp số nguyên 32B/64B AVX2 + Tier-1 BFC + Mixed IA/AA d-DNNF + cầu dao SMT 25 ms |
-| **Thông lượng Sinh Văn bản** | Phase 1–2 AR: `34–86 tok/s` · Mục tiêu Track 2 AC-NCM: `470–750 BPE-equiv tok/s` | `Qwen3-0.6B` (Edge) / `QAT Gemma 4 E2B` ($\ge 8\text{ GB}$) + PLSS; Track 2 mở cổng khi $\text{PPL}<45$ |
-| **Tốc độ Thị giác & Robot** | `120–408+ FPS` ($\le 2.45\text{ ms/khung}$ 1080p/2K) · Robot: `500–1,000 Hz` | `faer` Cholesky + Polar $SO(2)$ ARAP 2 bước (`0.30 ms`) + `Accum_Z` Porter-Duff + `parry3d` |
-| **Tỷ lệ Trôi Sai số Miền đóng** | **`0.00%`** trên thực thể/con số khóa con trỏ (`<PTR_ID_k>`) | `WamSkeleton` + kiểm tra Aho-Corasick + ghép byte không sao chép PLSS |
-| **Hành vi Vô tri / Xung đột cao** | **`100%` tất định** Từ chối Nhận biết Xung đột / Chủ động / Hỏi làm rõ | Ưu tiên Xung đột ($\text{diss}_Q > 0.50$) trước Cổng Vô tri Kép ($\pi_{\max}>0.55 \lor \pi_Q>\theta_{\text{hard}}$) |
-
----
-
-### 6. Môi trường Host & Gói phát hành
-
-Cấu trúc thư mục của gói phát hành nằm ở [Phụ lục A](#appendix-a-release-package-layout).
-
-**Yêu cầu môi trường Host (Linux `x86_64`, AVX2+FMA+AVX-VNNI):**
-
-- **Kernel:** Ubuntu 24.04 / Linux Mint 22.x (`USN-9022-1`, `>= 6.8.0-149-generic`, `kernel.io_uring_disabled=0`) hoặc LMDE 7 / Debian 13 (`>= 6.12.113-1`, vá `CVE-2026-99999`). Đưa `vhost_vsock` vào danh sách chặn trên Host để loại bỏ bề mặt tấn công `CVE-2026-53365` (*VsockDrop*).
-- **Toolchain:** Rust Edition 2024 qua `rustup` (`MSRV 1.96`, khuyến nghị `1.100`; đặt `[profile.release] panic = "unwind"` trong `Cargo.toml` gốc cho cơ chế dự phòng của `spade 2.15.1`).
-- **Lưu trữ & KVM:** `ext4`/`xfs` không mã hóa (hoặc LUKS toàn đĩa; không dùng `eCryptfs`) để hỗ trợ `O_DIRECT`; thêm người dùng vào nhóm `kvm` và nâng `RLIMIT_MEMLOCK` nếu đăng ký bộ đệm `io_uring` cố định $> 8\text{ MB}$.
-
----
-
-### 7. Lộ trình Stage-Gate & Giao thức Đánh giá
-
-| Giai đoạn | Thời gian | Phạm vi & Tiêu chí Qua cổng (*Exit Criteria*) |
-| :--- | :--- | :--- |
-| **Phase 1A-Alpha** | Tuần 1–6 | Lõi ký hiệu thuần: Stratified Horn/Datalog trên Rust + Atanassov IFS + `heed 0.23.1` Merkle-DAG + `egglog 3.0.0` + `z3`/`cvc5` + `Qwen3-0.6B` PLSS + Cổng kiểm tra hình thức bắt buộc (`cargo check/clippy/proptest` 10k mẫu/bất biến). |
-| **Phase 1A-Beta** | Tuần 7–12 | Khép vòng nơ-ron: bản vá `EmbeddingGemma 2` $H_{1:T}$ + `SpecTemp` + Tier-1 Biaffine + Tier-2 Roundtrip/`GenV+HN`. Edge đánh giá trên **AbstentionBench & PlanBench**; Workstation/Server trên **VeriBench & SWE-bench Verified**. |
-| **Phase 1B (+ Track 3A)** | Tuần 13–20 | Tabling đệ quy trái Rust gốc + bao hàm đa diện Mod TCLP + `d-DNNF` Mixed IA/AA + `CLIPPER` static-VE. Nhánh **Track 3A** (2.5D/VTuber Rust Engine) khởi chạy song song từ Tháng 2. |
-| **Phase 2** | Tháng 6–8 | Chưng cất 5 họ mô hình mở thương mại (`Qwen3.8-27B` + `Qwen3.6-35B-A3B`, `MiMo-V2.6`, `GLM-5.3-Flash`, `DeepSeek-V4.1-Flash-1017`, `Gemma 4`) trên AR sản xuất + PLSS ($0.00\%$ trôi `<PTR_ID_k>`). Nhánh **Track 2 AC-NCM R&D** yêu cầu OpenWebText $\text{PPL} < 45$ và `<PTR_ID_k>` $\ge 99.9\%$. |
-| **Phase 3** | Tháng 9–11 | Tích hợp các spoke độc lập (`mod-vision`, `mod-streamer-rt`, `mod-lidar`, `mod-rsi-sandbox` Firecracker v1.18.0 + chuyển `egg-stitch` sang `egglog 3.0.0`), tinh chỉnh `Harness^2` Vòng 2 và **cổng cắm nóng Gemma 5 không cần viết lại dòng Rust nào** (nhờ ghim Major ABI `0..4095`). |
-
-**5 bộ benchmark có kiểm soát & 3 thí nghiệm loại bỏ (ablation) bắt buộc:**
-
-1. *Bộ nhớ tổ hợp & khử trùng lặp sub-DAG:* `SWE-bench Verified`, `PlanBench`, `VeriBench` ($N \in \{100, 500, 1000, 5000\}$ nhánh).
-2. *Từ chối nhận thức chủ động & chống ảo giác:* `AbstentionBench` ($>35,000$ mục), `FalseQA` (TAR, FAR, VPU AUROC).
-3. *GUI 4K đường dài & quy trình khoa học:* `ScreenSpot-Pro`, `OSWorld 2.0`, `OSWorld-Science`.
-4. *Tổng hợp thị giác 2 nhánh & LiDAR chủ động:* `BlenderGym`/`BlenderBench`, phân biệt mờ tổng hợp, đường thử chướng ngại vật khói/kính cho LiDAR.
-5. *Thông lượng AC-NCM song song so với độ trung thực sự kiện:* tok/s CPU DDR5 kênh đôi, OpenWebText PPL, khớp chính xác `<PTR_ID_k>`.
-
-*Ablation:* (1) tắt khử trùng lặp 1-WL + BLAKE3 và `Ephemeral_Session_Arena`; (2) thay IFS $\langle \mu,\nu,\pi \rangle$ và `lineage_bloom_mask` bằng xác suất vô hướng; (3) bỏ Trọng tài Trực giao Host, Airlock 128B, biến động West $\sigma^2_{\text{vol}}$ và kiểm chứng `cvc5`.
-
----
-
-### 8. Ngôn ngữ sử dụng, Giấy phép & Trích dẫn
-
-**Ngôn ngữ và định dạng sử dụng:**
-
-| Ngôn ngữ / định dạng | Vai trò trong hệ thống |
-| :--- | :--- |
-| **Rust** (Edition 2024, `MSRV 1.96`) | Ngôn ngữ chính: `core/unsca-kernel`, `system/`, `modules/mod-*` (WAM-SIMD, LMDB, encoder, SLM, vision, streamer, lidar, RSI sandbox) |
-| **Prolog / Datalog** (mờ trực giác, defeasible) | Ngôn ngữ luật suy diễn của kernel, biên dịch sang bytecode `.wamb` |
-| **WGSL** | Shader GPU cho `wgpu` / `vello` (vật liệu thủ tục, LUT, G-Buffer) |
-| **SMT-LIB 2.6** | Biểu diễn phương trình và ràng buộc để kiểm chứng bằng `z3` / `cvc5` / `dReal` |
-| **DeLP** | Luật kiểm toán của Trọng tài Host (`judge_eafs_rules.delp`) |
-| **C++** | Bản vá `llama.cpp` PR `#30054` (`H_1:T`) và thư viện native gọi qua FFI (`cvc5`, `Z3`, `SymEngine`, `SUNDIALS`) |
-| **Python** (bên thứ ba) | Công cụ ngoại tuyến chạy trong Zone 4A (`RD-Agent`, `aideml`, `Boltz-2`, `OpenFold3`); không thuộc runtime lõi |
-
-**Giấy phép:**
-
-- **Lõi runtime:** [MIT License](LICENSE) (`core/unsca-kernel`, `system/`, các spoke Rust).
-- **Bên thứ ba & cô lập pháp lý:** `cvc5` (`--poly` GMP/LibPoly, LGPLv3) và `Opengrep` CLI (LGPL-2.1, chỉ dùng tập luật MIT) chạy hoàn toàn ngoài tiến trình qua IPC/CLI; dữ liệu VAD trie `EmoBank`/`EmoPair` (CC BY-SA 4.0) được đóng gói tách khỏi nhị phân Rust theo MIT; `ZERO_VISUAL_STYLE_RSI` và `mod-c2pa-export` (`c2pa 0.92.2`) bảo vệ quyền sở hữu trí tuệ của họa sĩ và hỗ trợ tuân thủ Điều 50 Đạo luật AI châu Âu (Content Credentials).
-
-**Trích dẫn:** xem [Phụ lục B](#appendix-b-citation).
+- [🇬🇧 English (EN)](#english-en)
+- [🇯🇵 日本語 (JA)](#japanese-ja)
+- [🇻🇳 Tiếng Việt (VI)](#vietnamese-vi)
+- [🇨🇳 中文 (ZH)](#chinese-zh)
+- [Appendix A — Release Package Layout](#appendix-a-release-package-layout)
+- [Appendix B — Citation](#appendix-b-citation)
+- [License](#license)
 
 ---
 
@@ -351,7 +67,7 @@ Cấu trúc thư mục của gói phát hành nằm ở [Phụ lục A](#appendi
 
 🇬🇧 **English** — Takuma-1 (Trinity Symbolic) / `TNS-1`
 
-> **Quick Jump:** [Tiếng Việt](#vietnamese-vi) · [English](#english-en) · [日本語](#japanese-ja) · [中文](#chinese-zh) · [↑ Top](#table-of-contents)
+> **Quick Jump:** [English](#english-en) · [日本語](#japanese-ja) · [Tiếng Việt](#vietnamese-vi) · [中文](#chinese-zh) · [↑ Top](#table-of-contents)
 
 ### 1. Abstract & Architectural Motivation
 
@@ -634,7 +350,7 @@ The release package directory layout is in [Appendix A](#appendix-a-release-pack
 
 🇯🇵 **日本語** — Takuma-1 (Trinity Symbolic) / `TNS-1`
 
-> **言語クイックジャンプ:** [Tiếng Việt](#vietnamese-vi) · [English](#english-en) · [日本語](#japanese-ja) · [中文](#chinese-zh) · [↑ トップへ](#table-of-contents)
+> **言語クイックジャンプ:** [English](#english-en) · [日本語](#japanese-ja) · [Tiếng Việt](#vietnamese-vi) · [中文](#chinese-zh) · [↑ トップへ](#table-of-contents)
 
 ### 1. 概要とアーキテクチャ動機
 
@@ -904,11 +620,285 @@ flowchart TB
 
 ---
 
+## Vietnamese (VI)
+
+🇻🇳 **Tiếng Việt** — Takuma-1 (Trinity Symbolic) / `TNS-1`
+
+> **Chuyển nhanh ngôn ngữ:** [English](#english-en) · [日本語](#japanese-ja) · [Tiếng Việt](#vietnamese-vi) · [中文](#chinese-zh) · [↑ Lên đầu trang](#table-of-contents)
+
+### 1. Tóm tắt & Động lực Kiến trúc
+
+**Takuma-1 (Trinity Symbolic)** — mã kỹ thuật chính thức **TNS-1 (Trinity Symbolic Systems)**, phát triển bởi nhóm **GOSIS VN** — là một kiến trúc nhận thức thần kinh – ký hiệu hộp trắng (*white-box neuro-symbolic cognitive architecture*) phân tách chức năng hoàn toàn, được đặc tả theo tài liệu kỹ thuật tổng thể **U-NSCA v2 (P)** (`SPEC-UNSCA-V2-P-UNIFIED v1.0.9.3-FREEZE`, trạng thái *Spec Freeze — GO cho Phase 1A-Alpha Track 1*).
+
+Thay vì ép một mạng nơ-ron nguyên khối duy nhất vừa lưu trữ tri thức, vừa duyệt cây suy luận đa nhánh, vừa sinh token bề mặt, **Takuma-1 (`TNS-1`)** vận hành theo mô thức ***Transformation Is All You Need*** nhằm giải quyết triệt để 4 nghịch lý cấu trúc của Transformer tự hồi quy nguyên khối và mô hình khuếch tán pixel:
+
+| Nghịch lý Cấu trúc | Giới hạn của Kiến trúc Nguyên khối | Giải pháp trong Takuma-1 (`TNS-1`) |
+| :--- | :--- | :--- |
+| **1. Bất khả hợp nhất KV-Cache nhân quả** | Dưới RoPE, các nhánh suy luận hội tụ từ tiền tố hoặc độ dài token khác nhau ($t_1 \neq t_2$) tạo tensor KV khác nhau về số học ($K_{B_1}(S) \neq K_{B_2}(S)$), khiến bộ nhớ tăng tuyến tính khi mở rộng $N \in [10^3, 10^4]$ nhánh song song. | **LMDB Merkle-DAG 2 tầng** (`Core_Axiom_LMDB` + `Ephemeral_Session_Arena`) kết hợp nâng hằng số Mod TCLP, chuẩn hóa lặp 1-WL + De Bruijn và khử trùng lặp nhánh con bằng BLAKE3 128-bit trong $O(1)$ ($\approx 100\text{ ns}$). |
+| **2. Quán tính chuẩn hóa Softmax** | Chiếu lên đơn hình xác suất ($\sum_v P(v \mid x) \equiv 1.0$) làm mất tổng cường độ bằng chứng, đánh đồng xung đột cân bằng ($[+50,+50]$) với sự vô tri tuyệt đối ($[-10,-10]$) và làm suy giảm độ chính xác từ chối trả lời. | **Logic Mờ Trực giác Atanassov** $\langle \mu, \nu, \pi \rangle$ ($\mu+\nu+\pi=1$) với cổng định tuyến **Ưu tiên Xung đột** (`Conflict_Aware_Refusal`) và **Cổng Vô tri Kép** (`Epistemic_Positive_Refusal` / truy tìm tiên đề thiếu $\Delta_i$). |
+| **3. Ghép chặt Ngôn ngữ – Logic & Thuế Căn chỉnh** | Dùng chung trọng số lan truyền xuôi giữa suy diễn logic, cú pháp bề mặt và chính sách RLHF gây lãng phí băng thông bộ nhớ và làm nhiễu mạch suy luận toán – logic (*Alignment Tax*). | **Codec Hub-and-Spoke tách rời** (`mod-encoder` + `mod-slm`) + ghép con trỏ không sao chép **PLSS** `<PTR_ID_k>` ($0.00\%$ trôi sai số thực tế) + **Dàn Ưu tiên Nhận thức 6 cấp** ($\mathcal{L}_{\text{prio}} \in \{1..6\}$). |
+| **4. Lưới Pixel 2D & Nhập nhằng Tỷ lệ Đơn nhãn** | Khuếch tán pixel thiếu bất biến Euclide 3D; phép chiếu camera đơn nhãn $\text{rank}(J_{\text{proj}})=2<3$ là bài toán đặt không chỉnh; cắt đa ô dày đặc trên GUI 4K phá vỡ SLA độ trễ thấp. | **Động cơ Tổng hợp Thị giác Xây dựng 2 nhánh 2D/2.5D/3D** (`wgpu 30.0.1` + `vello 0.12.0` + `spade` + `faer`, $>120\text{ FPS}$, $\le 2.45\text{ ms/khung}$), **Grounding GUI 4K 2 tầng** (OS A11y/DOM $<1\text{ ms}$) và **Robot LiDAR ToF chủ động** (`HERO-LO`/`HP2-SLAM`, $500\text{–}1000\text{ Hz}$). |
+
+---
+
+### 2. Triết lý Thiết kế & 4 Cơ chế Bảo vệ Hộp trắng
+
+**Takuma-1 (`TNS-1`)** áp dụng **Phân tách Chức năng (*Functional Disentanglement*)** thành 5 mặt phẳng trực giao kiểm chứng hình thức được, đi kèm 4 bất biến kiềm chế hộp trắng:
+
+1. **Cấm Tiến hóa Luật Ẩn (*Zero Latent Rules*):** Tri thức thu được trong mơ ngoại tuyến (`RSI-1`) hay tiếp nạp trực tuyến (`RSI-3`) tuyệt đối không tích lũy vào trọng số ma trận mờ đục. Mọi luật suy diễn hay định luật vật lý phải kết tinh thành cấu trúc 32-byte `AnnotatedPredicateNode` hoặc phương trình đóng SymEngine/SMT-LIB trong `Core_Axiom_LMDB`.
+2. **Phanh Entropy MDL Hộp trắng ($\mathcal{H}_{\text{unverified}}$) & Đẩy loại Pareto Tự động:** Đo độ phức tạp cấu trúc chưa kiểm chứng bằng $\mathcal{H}_{\text{unverified}} = \sum_{v \in \mathcal{V}_{\text{auto}}} (\text{Depth}(v)+1)\log_2(|\text{Children}(v)|+2) \ge |\mathcal{V}_{\text{auto}}|\text{ bit}$. Khi chạm ngưỡng $\Theta_{\text{quota}}$, *Automated Pareto Eviction* tự động thay thế macro kém hiệu quả nhất, trong khi mọi ghi vĩnh viễn vào `Core_Axiom_LMDB` bắt buộc vượt qua kiểm chứng SMT 4 truy vấn.
+3. **Mặt phẳng Tin cậy Host Thống nhất + Sandbox Zone 4A Không Mạng & Airlock C-ABI 128-Byte:** Các thành phần lõi tin cậy (`core/unsca-kernel`, `mod-lmdb` đơn sở hữu với `PROT_READ` mmap trên Edge, `mod-encoder`, `mod-slm`, `mod-streamer-rt` và Trọng tài Trực giao Host) chạy trên Host. Mã không tin cậy bị cô lập hoàn toàn trong MicroVM thuần CPU **Firecracker v1.18.0** (**Zone 4A**, loại bỏ `eth0`, VMGenID + `virtio-rng` + UFFD warm pool $3\text{–}8\text{ ms}$); Zone 4B (Blender nội tuyến) bị loại bỏ vĩnh viễn. Luồng Zone 4A $\leftrightarrow$ Host đi qua Airlock C-ABI 128-byte *fail-closed* (`Host UnixStream <-> Guest AF_VSOCK`, không dùng `vhost_vsock` trên Host) kết hợp chữ ký Ed25519 `verify_strict` trên mặt phẳng tin cậy Judge/Trainer $\to$ `mod-lmdb`.
+4. **Cắt bỏ Phẫu thuật & Khôi phục Thời gian Merkle-Root 0.5 ms:** Mỗi kỷ nguyên $e$ lưu băm gốc bất biến `Merkle_Root_Hash(e)` trong `Epoch_Roots`, cho phép xóa chính xác một `node_hash` 128-bit hoặc quay lui nguyên tử về `Merkle_Root_Hash(e - k)` trong $\approx 0.5\text{ ms}$.
+
+---
+
+### 3. Kiến trúc Hệ thống & Tô-pô Đồng hồ Cát Hai chiều
+
+`TNS-1` vận hành nhận thức đầu-cuối theo mô hình **Đồng hồ Cát Hai chiều (*Bidirectional Hourglass*: Tam giác Ngược $\to$ Cổ Hộp trắng Chính tắc $\to$ Tam giác Thuận)** trên không gian làm việc Rust 2024 dạng **Hub-and-Spoke** (`core/unsca-kernel` $\to$ `system/` $\to$ `modules/mod-*`).
+
+```mermaid
+flowchart TB
+    subgraph S1["SPOKE 1: Tam giác Ngược — mod-encoder & Tiếp nạp Đa phương thức"]
+        ENC["EmbeddingGemma 2 271M Đóng băng 100% (Q8_0, bf16/fp32)<br/>H_1:T (512d) + L1 Ontology SimVQ 768d (6.0 MiB, tối đa 8191)"]
+        BIA["Bộ chuyển đổi Deep Biaffine DAG-to-Horn<br/>(0.79 MB INT8, 268.44 MOPs, 0.4–1.2 ms AVX2, Top-B=3)"]
+        SCN["Bộ quét Song song (Nạp lười / Loại trừ tương hỗ)<br/>EmoBank+EmoPair VAD Trie · gliner2.5-small-v1 · V-JEPA 2.1 · ToF LiDAR"]
+        ENC --> BIA
+        SCN --> BIA
+    end
+
+    subgraph HUB["HUB: Cổ Hộp trắng Chính tắc — core/unsca-kernel & system/"]
+        PRUNE["Cổng Tỉa Kép Pre-WAM (MOD-PRUNE-02)<br/>Tier-1 BFC O(|R_Q|) (<100 ms) · Tier-2 CLIPPER Static-VE MILP + CLMN"]
+        WAM["Máy ảo WAM-SIMD Prolog Mờ Trực giác Khả bác<br/>32B/64B AVX2 · IFS ⟨μ,ν,π⟩ · Dual-Channel WMC + CBF/CBF-UM · d-DNNF Mixed IA/AA"]
+        MEM["LMDB Merkle-DAG 2 Tầng (mod-lmdb Đơn sở hữu)<br/>core_hot.lmdb (PROT_READ) · core_cold_archive.lmdb (Worker lạnh cô lập)<br/>Ephemeral_Session_Arena (Sharded Slab, GC O(1) ~1 ns)"]
+        SMT["mod-smt-cas Cô lập (IPC Ngoài tiến trình)<br/>egglog 3.0.0 · SymEngine 0.14/0.15 · Z3 0.23.0 · cvc5 0.6.1 · dReal (UNSAT) · SUNDIALS 7.6"]
+        PRUNE --> WAM
+        WAM <--> MEM
+        WAM <--> SMT
+    end
+
+    subgraph S2["SPOKE 2: Tam giác Thuận — Codec Ngôn ngữ, Thị giác & Robot"]
+        SLM["mod-slm (Codec Bề mặt + PLSS Trôi 0.00%)<br/>Phase 1–2 AR Sản xuất: Qwen3-0.6B Q4 (Edge) / QAT Gemma 4 E2B (>=8GB)<br/>Track 2 R&D: Block-Causal AC-NCM + SpaceByte/HAT + LoRA-XS (1.57 MB)"]
+        VIS["mod-vision & mod-streamer-rt (Zone 6 wgpu 30.0.1 + Vello 0.12.0)<br/>Động cơ 4-DAG · G-Buffer 16-Pass (tái dùng 66.36 MB) · ALG 3B Mesh Warp (<=2.5 ms)<br/>mod-25d-baker · Dual-Driver Arbitrator · hibari-tts / MOSS-TTS-Nano / OBS Sink"]
+        ROB["mod-lidar (Robot LiDAR ToF Chủ động)<br/>HERO-LO (+odom_prior) / HP2-SLAM · Patchwork++ · parry3d 0.31.1 · Điều khiển C2 500–1000 Hz"]
+    end
+
+    subgraph SEC["ZONE 4A SANDBOX & QUẢN TRỊ TRI-MODAL RSI"]
+        Z4A["Zone 4A Sandbox Thuần CPU (Firecracker v1.18.0)<br/>Không eth0 · VMGenID + virtio-rng + UFFD Warm Pool (3–8 ms)<br/>Thực thi Mã không tin cậy · Dream-RSI · Boltz-2 / OpenFold3 / RD-Agent"]
+        AIR["Airlock C-ABI 128-Byte Fail-Closed<br/>Host UnixStream ↔ Guest AF_VSOCK (Không dùng Host vhost_vsock)<br/>Ed25519 verify_strict · Giới hạn zstd 0.14.4 4 MiB · MVCC Nhận thức 6 cấp"]
+        Z4A <--> AIR
+    end
+
+    S1 -- "32B AnnotatedPredicateNode + Top-B AST + Nút 3D" --> HUB
+    HUB -- "WamSkeleton Sở hữu + Immutable_Ptr_Map + Final_VAD" --> SLM
+    HUB -- "Vị từ Không gian + Quỹ đạo Khái niệm" --> VIS
+    HUB -- "Điểm dẫn đường Không va chạm + CLP(R)" --> ROB
+    HUB <--> AIR
+```
+
+---
+
+### 4. Các Pipeline Thực thi Đầu-Cuối & Phân hệ
+
+#### 4.1 Pipeline Nhận thức Đa phương thức (`POST /v1/cognitive/execute` — `ALG 4B & 5`)
+
+```mermaid
+flowchart TD
+    REQ["Yêu cầu Đa phương thức Q<br/>(Văn bản / Ảnh / Video / LiDAR / VTuber / Dữ liệu Thực nghiệm)"] --> ST1
+
+    subgraph ST1["GIAI ĐOẠN 1: Tam giác Ngược (15–35 ms CPU Edge)"]
+        E1["mod-encoder: EmbeddingGemma 2 (H_1:T, c_Q^1, z_768)<br/>+ EmoBank/EmoPair VAD Trie + gliner2.5-small-v1"]
+        E2["MOD-PRUNE-02: Tier-1 BFC O(|R_Q|) / Tier-2 CLIPPER+CLMN<br/>-> Active_Concept_Bitmap & Allowed_SLM_Mask"]
+        E3{"Độ phức tạp truy vấn?"}
+        E4["Tier-1 Luồng nhanh (0.4–1.2 ms)<br/>Deep Biaffine Điền khe Lược đồ đóng (Top-B=3)"]
+        E5["Tier-2 Tự động Hình thức hóa Chống VPU (0.5–5 s)<br/>SLM + Kiểm chứng Khứ hồi Z3/cvc5 (F1 == F2) + GenV+HN"]
+        E6["Nhánh Không gian: GUI 4K 2 tầng (OS A11y / V-JEPA 2.1)<br/>Cổng Video VL-JEPA (ALG 3A-VIDEO) hoặc LiDAR (ALG 3C-LIDAR)"]
+        E1 --> E2 --> E3
+        E3 -- "Lược đồ đóng" --> E4
+        E3 -- "Mở / Phức tạp" --> E5
+        E1 -. "Có Ảnh/Video/LiDAR" .-> E6
+    end
+
+    ST1 --> ST2
+
+    subgraph ST2["GIAI ĐOẠN 2: Cổ Hộp trắng Chính tắc (ALG 1-CORE)"]
+        W1["Danh sách việc SLG-WAM Song song + LMDB Merkle-DAG 2 Tầng<br/>32B/64B AVX2 · Mod TCLP · egglog 3.0 · Cầu dao SMT 25 ms"]
+        W2["Lan truyền ngược Phương sai Rủi ro (Luật Tổng Phương sai) & Xếp hạng"]
+        G1{"Cổng 1: Xung đột?<br/>(diss_Q > 0.50 hoặc Bit 3)"}
+        G2{"Cổng 2: Vô tri Kép?<br/>(pi_max > 0.55 hoặc pi_Q > 0.85)"}
+        G3{"Hòa điểm Beam?"}
+        R1["Conflict_Aware_Refusal<br/>(Trả về Bằng chứng Ủng hộ C+ & Phản bác C-)"]
+        R2["Epistemic_Positive_Refusal<br/>(Tìm kiếm Ngược Abductive -> Tiên đề thiếu Delta_i)"]
+        R3["Ambiguity_Clarification_Refusal<br/>(Trả về Top-2 Cách diễn giải Cạnh tranh)"]
+        SKEL["Sao chép WamSkeleton Sở hữu + Immutable_Ptr_Map<br/>Ephemeral_Session_Arena.reset_cursor_to_zero() (~1 ns)"]
+
+        W1 --> W2 --> G1
+        G1 -- "Có (Chế độ Nghiêm ngặt)" --> R1
+        G1 -- "Không" --> G2
+        G2 -- "Có (Chế độ Nghiêm ngặt)" --> R2
+        G2 -- "Không" --> G3
+        G3 -- "Có" --> R3
+        G3 -- "Không" --> SKEL
+    end
+
+    ST2 --> ST3
+
+    subgraph ST3["GIAI ĐOẠN 3: Tam giác Thuận & GIAI ĐOẠN 4: RSI Bất đồng bộ"]
+        T1["Luồng Văn bản: Typed AST Pretty-Printer / AR Gọn + PLSS<br/>(hoặc Track 2 R&D AC-NCM + Aho-Corasick) -> Trôi 0.00%"]
+        V1["Luồng Thị giác: ALG 3B VTuber (<=2.5 ms) / ALG 3D Sửa 2D<br/>hoặc ALG 3C Điêu khắc 3D & Video SE(3) (>=120 FPS)"]
+        RSI["Giai đoạn 4: Kích hoạt Active RSI Bất đồng bộ (BTL cục bộ / Trainer 4-Gate)"]
+        T1 --> RSI
+        V1 --> RSI
+    end
+```
+
+#### 4.2 Pipeline Thị giác 2 Nhánh (`ALG 3B / 3C / 3D`) & Robot LiDAR Chủ động (`ALG 3C-LIDAR`)
+
+```mermaid
+flowchart LR
+    subgraph VIS_PIPE["Động cơ Tổng hợp Thị giác 2 Nhánh (>120 FPS, Bỏ hoàn toàn Zone 4B/Blender)"]
+        VIN["Ảnh 2D / 6 góc Trực giao /<br/>.psd/.ora/.inx / Kịch bản Cảnh"] --> VPER["V-JEPA 2.1 (8–15 ms) + 5D CIELAB<br/>+ Cổng Độ nét Giãn nở B_k (GUI/Robot)"]
+        VPER --> VRT{"Bộ định tuyến Thị giác NCM"}
+        VRT -- "Nhánh A: Sửa 2D / VTuber (ALG 3D)" --> BA["Động cơ Công cụ 4-DAG (G_topo/G_stroke/G_shade/G_logic_vis)<br/>CIELAB + Windfoil Giới hạn + MI-GAN Cắt vùng (27 MB)<br/>wgpu Multigrid Poisson Theta(N) + SPRITETOMESH"]
+        VRT -- "Nhánh B: Điêu khắc 3D & Video (ALG 3C)" --> BB["Tài sản .glb/3DGS gốc hoặc G-Buffer wgpu 16-Pass<br/>(Tái dùng 66.36 MB Scratch) + spade CDT + faer Poisson<br/>Kiểm tra VETR parry3d+HiGHS + Quỹ đạo C2 SE(3)"]
+        BA --> LDB["Fabricated_2_5D_Layers (LMDB Thống nhất)<br/>VirtualProxyRig3D + 52 ARKit Blendshapes"]
+        BB --> LDB
+        LDB --> RT["Động cơ Thời gian thực ALG 3B (<=2.45 ms/khung iGPU)<br/>Polar SO(2) ARAP 2 bước (0.30 ms) + Đổ bóng Accum_Z<br/>Dual-Driver Arbitrator + mod-broadcast-sink (OBS)"]
+    end
+
+    subgraph LID_PIPE["Robot LiDAR ToF Chủ động Không Tập dữ liệu (ALG 3C-LIDAR)"]
+        LIN["Đám mây điểm LiDAR ToF +<br/>Option#lt;ImuWheelOdom#gt;"] --> L1["16B XYZT SIMD + HERO-LO (~9.5 ms @ 20 Hz)<br/>(Dự phòng: HP2-SLAM) + Tách mặt đất Patchwork++"]
+        L1 --> L2["PCA 3x3 Cầu Thích ứng Khoảng cách<br/>Cổng Tán xạ (rho_scatter > 0.60 & Cường độ phản xạ thấp)"]
+        L2 -- "Khói / Sương / Kính" --> LREF["Từ chối Chủ động LiDAR<br/>(HALT_AND_PROBE_MULTI_ANGLE)"]
+        L2 -- "Thông thoáng" --> L3["Hoạch định Điểm WAM + CLP(R) + parry3d SDF<br/>Spline Thomas C2 (Holonomic) / Pure-Pursuit Bậc 5 G2<br/>Điều khiển Vòng kín 500–1000 Hz"]
+    end
+```
+
+#### 4.3 Pipeline Tự cải tiến Đệ quy Ba chế độ (`Tri-Modal RSI`) & Airlock 128-Byte
+
+```mermaid
+flowchart TB
+    subgraph L1["VÒNG 1: Mơ Ký hiệu Ngoại tuyến (RSI-1 / Dream-RSI)"]
+        D1["Thế giới Phát lại M_dream + Ràng buộc Phủ định Nhánh lỗi C_neg"]
+        D2["I-PUCT Lần đầu (pi > 0.40) -> Zone 4A Firecracker v1.18.0<br/>(VMGenID + getrandom + UFFD Warm Pool 3–8 ms)"]
+        D3["E-Stitch Cửa sổ (Edge) / Toàn cục (Trainer) + GrowLibm + Propper"]
+        D1 --> D2 --> D3
+    end
+
+    subgraph L2["VÒNG 2: RSI Chủ động Hai tầng (RSI-2)"]
+        A1["Tầng 2A (Edge Cục bộ): Core PROT_READ + Local_Overlay (<5 MB)<br/>BTL Đối xứng Tổng-bằng-0 Chặn L_inf (Phép chiếu O(K), K<=64)"]
+        A2["Tầng 2B (Trainer Trung tâm): Kết tinh 4 Cổng<br/>Top-K Rủi ro -> Chuyên gia chọn -> Opengrep MIT + SMT 4-truy vấn UNSAT -> Khóa Cấp 5"]
+    end
+
+    subgraph L3["VÒNG 3: RSI Trực tuyến Có phép (RSI-3)"]
+        O1["Luồng API Whitelist -> Trọng tài Trực giao Host (DeLP)<br/>RPC Mô phỏng (Boltz-2 / OpenFold3 / GROMACS) + Biến động West f64 Suy giảm"]
+        O2["Airlock 128B C-ABI Verify-Before-Parse<br/>Ed25519 verify_strict + Whitelist cờ nghiêm ngặt (0x00|0x01|0x02|0x07) + Giới hạn zstd 4 MiB"]
+        O1 --> O2
+    end
+
+    L1 --> MVCC["Bộ điều khiển MVCC Nhận thức & Dàn Ưu tiên 6 Cấp (L_prio: 1..6)<br/>Cấp 6 An toàn Bất biến > Cấp 5 Trainer/VM=0 > Cấp 4 Phản bác Chính thức<br/>> Cấp 3 Sự kiện Khả bác > Cấp 2 Mơ/Trung lập > Cấp 1 Biến Tham chiếu<br/>+ Phanh MDL H_unverified + Rollback Merkle-Root 0.5 ms"]
+    L2 --> MVCC
+    L3 --> MVCC
+    MVCC --> DB["Core_Axiom_LMDB (Trainer R/W · Edge PROT_READ) + Local_Overlay_LMDB (Edge R/W)<br/>Tường lửa Pháp lý: ZERO_VISUAL_STYLE_RSI cô lập hoàn toàn User_Avatar_Store/"]
+```
+
+---
+
+### 5. Ngân sách Bộ nhớ Edge (`cgroup v2`) & Bảng Thông số Kỹ thuật
+
+#### 5.1 Kiểm toán Bộ nhớ Phân tách `cgroup v2` Chế độ Edge (`anon <= 1,536 MiB`, `memory.high = 3,072 MiB`, `memory.max = 4,096 MiB`)
+
+| Thành phần Chế độ Edge | `anon` (MiB) | `file` (MiB) | Cơ chế Cấp phát & Chính sách Gia cố |
+| :--- | ---: | ---: | :--- |
+| **HUB (`WAM-SIMD` + Arena + `egglog`)** | 350 | 0 | Sharded slabs, `TableSlots`, `egglog` ($\le 10\text{k}$ e-nodes) |
+| **`Qwen3-0.6B Q4` KV + Bộ nhớ tạm** | 159 | 0 | Khóa `-c 2048 -ctk q8_0 -ctv q8_0 -fa on` (119 MiB KV + 40 MiB tạm) |
+| **`mod-encoder` / `ort` / VAD Trie** | 220 | 40 | Kích hoạt bf16/fp32 đóng băng, `gliner2.5-small-v1` (`disable_prepacking=1`), `canonical_ontology.bin` |
+| **`mod-streamer-rt` (Live 2.5D + TTS)** | 285 | 0 | `wgpu 30.0.1` + ARAP + theo dõi khuôn mặt + `hibari`/`MOSS-TTS-Nano` ONNX (chạy song song 100%) |
+| **Ngăn xếp Runtime, Bộ cấp phát & IPC** | 150 | 0 | Rayon worker stacks, bộ đệm `UnixStream`, khe `io_uring` |
+| **`EmbeddingGemma 2` (`Q8_0 .gguf`)** | 0 | 296 | Page Cache `mmap` chỉ đọc (tuyệt đối không gọi `POSIX_FADV_DONTNEED`) |
+| **`Qwen3-0.6B Q4` (`.gguf`)** | 0 | 500 | Page Cache `mmap` chỉ đọc (tuyệt đối không gọi `POSIX_FADV_DONTNEED`) |
+| **Bytecode `.wamb` đã biên dịch** | 0 | 150 | `0_bootstrap_seed` + `1_logic_math_core` ánh xạ `mmap` trực tiếp |
+| **Tập làm việc nóng `core_hot.lmdb`** | 0 | 600 | `MADV_RANDOM`; `core_cold_archive.lmdb` cô lập trong `mm_struct` riêng |
+| **Tổng Chế độ Edge** | **1,164** | **1,586** | **Tổng `anon+file` $\approx$ 2,750 MiB** (dự phòng `anon` $\approx$ 372 MiB; `mod-smt-cas` Z3 giới hạn $\le 300\text{ MiB}$) |
+
+> **Bất biến C-ABI Rust Căn chỉnh theo Phần cứng (`const _: () = assert!(...)`):** `AnnotatedPredicateNode` = **32 B** (1 thanh ghi AVX2 YMM) · `ArenaBranchStateHeader` = **48 B** · `WamBranchExecutionFrame` = **64 B** (1 dòng cache L1) · `UnifiedDagNodeHeader` = **128 B** · `AirlockEpistemicFrame` = **128 B** (2 dòng cache L1).
+
+#### 5.2 Bảng Đặc tả Sản phẩm Mục tiêu (`Takuma-1 / TNS-1`)
+
+| Chỉ số Đặc tả | Giá trị Mục tiêu Chuẩn hóa | Bảo đảm Kỹ thuật Nền tảng |
+| :--- | :--- | :--- |
+| **Dung lượng Lõi Tối thiểu** | `1.8 GB` (`0.4 GB` hồ sơ nhúng nén tối đa + `25 MB` Seed Ngày-0) | Bytecode WAM-SIMD + `Core_Axiom_LMDB` nén Zstd + khử trùng lặp 1-WL BLAKE3 |
+| **Kho Mở rộng Offload** | `10 GB–50 GB` NVMe SSD (`4096 B` LBA `O_DIRECT`) | 3D Style PatchBanks + WGSL LUT nạp theo yêu cầu; LoRA-XS (1.57 MB) thường trú RAM |
+| **Cô lập Phiên Người dùng (Server)** | `< 5 us` / phiên (`Ephemeral_Session_Arena`) | Rayon đa nhân trên `mmap` chỉ đọc chung; Zone 4A Firecracker cho mã không tin cậy |
+| **SLA Độ trễ Truy vấn** | Tier-1: `P99 < 100 ms` (`8–45 ms` 8-core AVX2) · Tier-2: `0.5–5 s` | Nạp số nguyên 32B/64B AVX2 + Tier-1 BFC + Mixed IA/AA d-DNNF + cầu dao SMT 25 ms |
+| **Thông lượng Sinh Văn bản** | Phase 1–2 AR: `34–86 tok/s` · Mục tiêu Track 2 AC-NCM: `470–750 BPE-equiv tok/s` | `Qwen3-0.6B` (Edge) / `QAT Gemma 4 E2B` ($\ge 8\text{ GB}$) + PLSS; Track 2 mở cổng khi $\text{PPL}<45$ |
+| **Tốc độ Thị giác & Robot** | `120–408+ FPS` ($\le 2.45\text{ ms/khung}$ 1080p/2K) · Robot: `500–1,000 Hz` | `faer` Cholesky + Polar $SO(2)$ ARAP 2 bước (`0.30 ms`) + `Accum_Z` Porter-Duff + `parry3d` |
+| **Tỷ lệ Trôi Sai số Miền đóng** | **`0.00%`** trên thực thể/con số khóa con trỏ (`<PTR_ID_k>`) | `WamSkeleton` + kiểm tra Aho-Corasick + ghép byte không sao chép PLSS |
+| **Hành vi Vô tri / Xung đột cao** | **`100%` tất định** Từ chối Nhận biết Xung đột / Chủ động / Hỏi làm rõ | Ưu tiên Xung đột ($\text{diss}_Q > 0.50$) trước Cổng Vô tri Kép ($\pi_{\max}>0.55 \lor \pi_Q>\theta_{\text{hard}}$) |
+
+---
+
+### 6. Môi trường Host & Gói phát hành
+
+Cấu trúc thư mục của gói phát hành nằm ở [Phụ lục A](#appendix-a-release-package-layout).
+
+**Yêu cầu môi trường Host (Linux `x86_64`, AVX2+FMA+AVX-VNNI):**
+
+- **Kernel:** Ubuntu 24.04 / Linux Mint 22.x (`USN-9022-1`, `>= 6.8.0-149-generic`, `kernel.io_uring_disabled=0`) hoặc LMDE 7 / Debian 13 (`>= 6.12.113-1`, vá `CVE-2026-99999`). Đưa `vhost_vsock` vào danh sách chặn trên Host để loại bỏ bề mặt tấn công `CVE-2026-53365` (*VsockDrop*).
+- **Toolchain:** Rust Edition 2024 qua `rustup` (`MSRV 1.96`, khuyến nghị `1.100`; đặt `[profile.release] panic = "unwind"` trong `Cargo.toml` gốc cho cơ chế dự phòng của `spade 2.15.1`).
+- **Lưu trữ & KVM:** `ext4`/`xfs` không mã hóa (hoặc LUKS toàn đĩa; không dùng `eCryptfs`) để hỗ trợ `O_DIRECT`; thêm người dùng vào nhóm `kvm` và nâng `RLIMIT_MEMLOCK` nếu đăng ký bộ đệm `io_uring` cố định $> 8\text{ MB}$.
+
+---
+
+### 7. Lộ trình Stage-Gate & Giao thức Đánh giá
+
+| Giai đoạn | Thời gian | Phạm vi & Tiêu chí Qua cổng (*Exit Criteria*) |
+| :--- | :--- | :--- |
+| **Phase 1A-Alpha** | Tuần 1–6 | Lõi ký hiệu thuần: Stratified Horn/Datalog trên Rust + Atanassov IFS + `heed 0.23.1` Merkle-DAG + `egglog 3.0.0` + `z3`/`cvc5` + `Qwen3-0.6B` PLSS + Cổng kiểm tra hình thức bắt buộc (`cargo check/clippy/proptest` 10k mẫu/bất biến). |
+| **Phase 1A-Beta** | Tuần 7–12 | Khép vòng nơ-ron: bản vá `EmbeddingGemma 2` $H_{1:T}$ + `SpecTemp` + Tier-1 Biaffine + Tier-2 Roundtrip/`GenV+HN`. Edge đánh giá trên **AbstentionBench & PlanBench**; Workstation/Server trên **VeriBench & SWE-bench Verified**. |
+| **Phase 1B (+ Track 3A)** | Tuần 13–20 | Tabling đệ quy trái Rust gốc + bao hàm đa diện Mod TCLP + `d-DNNF` Mixed IA/AA + `CLIPPER` static-VE. Nhánh **Track 3A** (2.5D/VTuber Rust Engine) khởi chạy song song từ Tháng 2. |
+| **Phase 2** | Tháng 6–8 | Chưng cất 5 họ mô hình mở thương mại (`Qwen3.8-27B` + `Qwen3.6-35B-A3B`, `MiMo-V2.6`, `GLM-5.3-Flash`, `DeepSeek-V4.1-Flash-1017`, `Gemma 4`) trên AR sản xuất + PLSS ($0.00\%$ trôi `<PTR_ID_k>`). Nhánh **Track 2 AC-NCM R&D** yêu cầu OpenWebText $\text{PPL} < 45$ và `<PTR_ID_k>` $\ge 99.9\%$. |
+| **Phase 3** | Tháng 9–11 | Tích hợp các spoke độc lập (`mod-vision`, `mod-streamer-rt`, `mod-lidar`, `mod-rsi-sandbox` Firecracker v1.18.0 + chuyển `egg-stitch` sang `egglog 3.0.0`), tinh chỉnh `Harness^2` Vòng 2 và **cổng cắm nóng Gemma 5 không cần viết lại dòng Rust nào** (nhờ ghim Major ABI `0..4095`). |
+
+**5 bộ benchmark có kiểm soát & 3 thí nghiệm loại bỏ (ablation) bắt buộc:**
+
+1. *Bộ nhớ tổ hợp & khử trùng lặp sub-DAG:* `SWE-bench Verified`, `PlanBench`, `VeriBench` ($N \in \{100, 500, 1000, 5000\}$ nhánh).
+2. *Từ chối nhận thức chủ động & chống ảo giác:* `AbstentionBench` ($>35,000$ mục), `FalseQA` (TAR, FAR, VPU AUROC).
+3. *GUI 4K đường dài & quy trình khoa học:* `ScreenSpot-Pro`, `OSWorld 2.0`, `OSWorld-Science`.
+4. *Tổng hợp thị giác 2 nhánh & LiDAR chủ động:* `BlenderGym`/`BlenderBench`, phân biệt mờ tổng hợp, đường thử chướng ngại vật khói/kính cho LiDAR.
+5. *Thông lượng AC-NCM song song so với độ trung thực sự kiện:* tok/s CPU DDR5 kênh đôi, OpenWebText PPL, khớp chính xác `<PTR_ID_k>`.
+
+*Ablation:* (1) tắt khử trùng lặp 1-WL + BLAKE3 và `Ephemeral_Session_Arena`; (2) thay IFS $\langle \mu,\nu,\pi \rangle$ và `lineage_bloom_mask` bằng xác suất vô hướng; (3) bỏ Trọng tài Trực giao Host, Airlock 128B, biến động West $\sigma^2_{\text{vol}}$ và kiểm chứng `cvc5`.
+
+---
+
+### 8. Ngôn ngữ sử dụng, Giấy phép & Trích dẫn
+
+**Ngôn ngữ và định dạng sử dụng:**
+
+| Ngôn ngữ / định dạng | Vai trò trong hệ thống |
+| :--- | :--- |
+| **Rust** (Edition 2024, `MSRV 1.96`) | Ngôn ngữ chính: `core/unsca-kernel`, `system/`, `modules/mod-*` (WAM-SIMD, LMDB, encoder, SLM, vision, streamer, lidar, RSI sandbox) |
+| **Prolog / Datalog** (mờ trực giác, defeasible) | Ngôn ngữ luật suy diễn của kernel, biên dịch sang bytecode `.wamb` |
+| **WGSL** | Shader GPU cho `wgpu` / `vello` (vật liệu thủ tục, LUT, G-Buffer) |
+| **SMT-LIB 2.6** | Biểu diễn phương trình và ràng buộc để kiểm chứng bằng `z3` / `cvc5` / `dReal` |
+| **DeLP** | Luật kiểm toán của Trọng tài Host (`judge_eafs_rules.delp`) |
+| **C++** | Bản vá `llama.cpp` PR `#30054` (`H_1:T`) và thư viện native gọi qua FFI (`cvc5`, `Z3`, `SymEngine`, `SUNDIALS`) |
+| **Python** (bên thứ ba) | Công cụ ngoại tuyến chạy trong Zone 4A (`RD-Agent`, `aideml`, `Boltz-2`, `OpenFold3`); không thuộc runtime lõi |
+
+**Giấy phép:**
+
+- **Lõi runtime:** [MIT License](LICENSE) (`core/unsca-kernel`, `system/`, các spoke Rust).
+- **Bên thứ ba & cô lập pháp lý:** `cvc5` (`--poly` GMP/LibPoly, LGPLv3) và `Opengrep` CLI (LGPL-2.1, chỉ dùng tập luật MIT) chạy hoàn toàn ngoài tiến trình qua IPC/CLI; dữ liệu VAD trie `EmoBank`/`EmoPair` (CC BY-SA 4.0) được đóng gói tách khỏi nhị phân Rust theo MIT; `ZERO_VISUAL_STYLE_RSI` và `mod-c2pa-export` (`c2pa 0.92.2`) bảo vệ quyền sở hữu trí tuệ của họa sĩ và hỗ trợ tuân thủ Điều 50 Đạo luật AI châu Âu (Content Credentials).
+
+**Trích dẫn:** xem [Phụ lục B](#appendix-b-citation).
+
+---
+
 ## Chinese (ZH)
 
 🇨🇳 **中文** — Takuma-1 (Trinity Symbolic) / `TNS-1`
 
-> **语言快速跳转:** [Tiếng Việt](#vietnamese-vi) · [English](#english-en) · [日本語](#japanese-ja) · [中文](#chinese-zh) · [↑ 返回顶部](#table-of-contents)
+> **语言快速跳转:** [English](#english-en) · [日本語](#japanese-ja) · [Tiếng Việt](#vietnamese-vi) · [中文](#chinese-zh) · [↑ 返回顶部](#table-of-contents)
 
 ### 1. 摘要与架构动机
 
@@ -1180,10 +1170,7 @@ flowchart TB
 
 ## Appendix A: Release Package Layout
 
-**Phụ lục A — Cấu trúc gói phát hành.** Cấu trúc dự kiến của gói phát hành; đặc tả gốc
-dùng tên thư mục gốc `unsca-v2-p-release/`.
-
-*Planned layout of the release package. The source specification names the root directory `unsca-v2-p-release/`.*
+Planned layout of the release package. The specification names the root directory `unsca-v2-p-release/`.
 
 ```text
 tns-1-release/                          # Standardized release layout (spec: unsca-v2-p-release/)
@@ -1214,8 +1201,6 @@ tns-1-release/                          # Standardized release layout (spec: uns
 
 ## Appendix B: Citation
 
-**Phụ lục B — Trích dẫn (BibTeX).**
-
 ```bibtex
 @techreport{gosisvn2026takuma1,
   title       = {Transformation Is All You Need: Takuma-1 (Trinity Symbolic / TNS-1) — A White-Box Neuro-Symbolic Cognitive Architecture (U-NSCA v2 (P))},
@@ -1227,27 +1212,16 @@ tns-1-release/                          # Standardized release layout (spec: uns
 }
 ```
 
-## Documentation
-
-**Tài liệu.**
-
-| Tài liệu | Nội dung |
-| --- | --- |
-| [`LICENSE`](LICENSE) | Văn bản giấy phép MIT |
-
 ## License
 
-**Giấy phép.** Lõi runtime phát hành theo [MIT License](LICENSE). Các thành phần bên thứ
-ba (`cvc5`, `Opengrep`, dữ liệu `EmoBank`/`EmoPair`...) giữ giấy phép riêng như mô tả ở
-mục 8 của từng ngôn ngữ.
-
-*The core runtime is released under the [MIT License](LICENSE). Third-party components
-keep their own licenses, as described in section 8 of each language.*
+The core runtime (`core/unsca-kernel`, `system/` and the Rust spokes) is released under the
+[MIT License](LICENSE). Third-party components (`cvc5`, `Opengrep`, `EmoBank`/`EmoPair` data, …)
+keep their own licenses, as described in section 8 of each language.
 
 ---
 
-**GOSIS VN** · **Takuma-1 (Trinity Symbolic)** · `TNS-1` — đặc tả tiền triển khai, không phải kết quả đo thực tế.
+**GOSIS VN** · **Takuma-1 (Trinity Symbolic)** · `TNS-1` — pre-implementation specification, not measured results.
 
 Specification basis: `U-NSCA v2 (P)` (`SPEC-UNSCA-V2-P-UNIFIED v1.0.9.3-FREEZE`)
 
-[↑ Table of Contents](#table-of-contents) · [Tiếng Việt](#vietnamese-vi) · [English](#english-en) · [日本語](#japanese-ja) · [中文](#chinese-zh)
+[↑ Table of Contents](#table-of-contents) · [English](#english-en) · [日本語](#japanese-ja) · [Tiếng Việt](#vietnamese-vi) · [中文](#chinese-zh)
